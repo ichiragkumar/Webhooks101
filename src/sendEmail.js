@@ -10,8 +10,6 @@ export const sendEmailNotification = (title, slug)=>{
         },
     });
 
-
-
     
     const mailOptions = {
         from: process.env.EMAIL,
