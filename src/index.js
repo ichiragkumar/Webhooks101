@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import  sendEmailNotification  from "./sendEmailNotification.js";
-
+import sendDiscordMessage  from "./sendDiscordMessage.js";
 dotenv.config();
 const PORT = process.env.PORT || 3009;
 const app = express();
@@ -9,25 +8,28 @@ const app = express();
 
 app.use(express.json());
 
-app.post("/hashnode-webhooks", (req, res)=>{
-    const { title, slug } = req.body;
 
-   try {
-    if(title && slug){
-        sendEmailNotification(title, slug);
+
+app.post("/user", (req, res)=>{
+
+    const {name , age, gender } = req.body;
+
+    const newUser = {
+        name,
+        age,
+        gender,
 
     }
-    res.status(200).send("webHooks recieved");
 
-   } catch (error) {
-    res.status(500).send(error);
-
-   }
+    sendDiscordMessage(newUser)
+    res.status(200).json({
+        newUser:newUser
+    });
 })
-
 
 app.get("/", (req, res)=>{
     res.send("welcome to Hashnode webhooks")
+    
 })
 
 app.listen(PORT, ()=>{
